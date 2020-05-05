@@ -4,11 +4,13 @@ namespace BoxyBird\Inertia;
 
 class Inertia
 {
-    public static $request;
+    protected static $request;
 
-    public static $version;
+    protected static $version;
 
-    public static $share_props = [];
+    protected static $share_props = [];
+
+    protected static $root_view = 'app.php';
 
     public static function render(string $component, array $props = [])
     {
@@ -27,7 +29,12 @@ class Inertia
             wp_send_json($bb_inertia_page);
         }
 
-        return $bb_inertia_page;
+        require_once get_stylesheet_directory() . '/' . self::$root_view;
+    }
+
+    public static function setRootView(string $name)
+    {
+        self::$root_view = $name;
     }
 
     public static function version(string $version = '')
