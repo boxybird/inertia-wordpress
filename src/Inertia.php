@@ -2,11 +2,19 @@
 
 namespace BoxyBird\Inertia;
 
+use Illuminate\Support\Arr;
+
 class Inertia
 {
+    protected static $url;
+
+    protected static $props;
+
     protected static $request;
 
     protected static $version;
+
+    protected static $component;
 
     protected static $share_props = [];
 
@@ -18,11 +26,15 @@ class Inertia
 
         self::setRequest();
 
+        self::setUrl();
+        self::setComponent($component);
+        self::setProps($props);
+
         $bb_inertia_page = [
-            'component' => $component,
-            'url'       => self::$request,
+            'url'       => self::$url,
+            'props'     => self::$props,
             'version'   => self::$version,
-            'props'     => array_merge($props, self::$share_props),
+            'component' => self::$component,
         ];
 
         if (self::hasRequestHeaders()) {
@@ -75,6 +87,31 @@ class Inertia
     {
         global $wp;
 
-        self::$request = "/{$wp->request}";
+        self::$request = array_merge([
+            'WP-Inertia' => (array) $wp
+        ], getallheaders());
+    }
+
+    protected static function setUrl()
+    {
+        self::$url = '/' . data_get(self::$request, 'WP-Inertia.request');
+    }
+
+    protected static function setProps(array $props)
+    {
+        $props = array_merge($props, self::$share_props);
+
+        $only = array_filter(explode(',', data_get(self::$request, 'X-Inertia-Partial-Data')));
+
+        $props = ($only && data_get(self::$request, 'X-Inertia-Partial-Component') === self::$component)
+            ? Arr::only($props, $only)
+            : $props;
+
+        self::$props = $props;
+    }
+
+    protected static function setComponent(string $component)
+    {
+        self::$component = $component;
     }
 }
