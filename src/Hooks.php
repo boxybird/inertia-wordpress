@@ -6,13 +6,13 @@ class Hooks
 {
     public static function init()
     {
-        add_action('send_headers', [Hooks::class, 'handleInertiaRequest']);
+        add_action('send_headers', [Hooks::class, 'handleInertiaHeaders']);
     }
 
-    public static function handleInertiaRequest()
+    public static function handleInertiaHeaders()
     {
-        if (Inertia::hasRequestHeaders()) {
-            Inertia::addResponseHeaders();
+        if (InertiaHeaders::inRequest()) {
+            InertiaHeaders::addToResponse();
         }
     }
 }

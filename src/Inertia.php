@@ -37,7 +37,7 @@ class Inertia
             'component' => self::$component,
         ];
 
-        if (self::hasRequestHeaders()) {
+        if (InertiaHeaders::inRequest()) {
             wp_send_json($bb_inertia_page);
         }
 
@@ -60,27 +60,6 @@ class Inertia
             self::$share_props,
             $props
         );
-    }
-
-    public static function addResponseHeaders()
-    {
-        header('Vary: Accept');
-        header('X-Inertia: true');
-    }
-
-    public static function hasRequestHeaders()
-    {
-        $headers = getallheaders();
-
-        if (isset($headers['X-Requested-With'])
-            && $headers['X-Requested-With'] === 'XMLHttpRequest'
-            && isset($headers['X-Inertia'])
-            && $headers['X-Inertia'] === 'true'
-        ) {
-            return true;
-        }
-
-        return false;
     }
 
     protected static function setRequest()
