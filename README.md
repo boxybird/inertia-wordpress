@@ -193,3 +193,7 @@ add_action('init', function () {
     Inertia::version(md5_file($manifest));
 });
 ```
+
+## Example WordPress Projects
+
+* https://github.com/boxybird/wordpress-inertia-demo-theme
