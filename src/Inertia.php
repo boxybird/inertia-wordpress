@@ -17,7 +17,7 @@ class Inertia
 
     protected static $component;
 
-    protected static $share_props = [];
+    protected static $shared_props = [];
 
     protected static $root_view = 'app.php';
 
@@ -55,12 +55,13 @@ class Inertia
         self::$version = $version;
     }
 
-    public static function share(array $props = [])
+    public static function share($key, $value = null)
     {
-        self::$share_props = array_merge(
-            self::$share_props,
-            $props
-        );
+        if (is_array($key)) {
+            self::$shared_props = array_merge(self::$shared_props, $key);
+        } else {
+            Arr::set(self::$shared_props, $key, $value);
+        }
     }
 
     protected static function setRequest()
@@ -79,7 +80,7 @@ class Inertia
 
     protected static function setProps(array $props)
     {
-        $props = array_merge($props, self::$share_props);
+        $props = array_merge($props, self::$shared_props);
 
         $only = array_filter(explode(',', data_get(self::$request, 'X-Inertia-Partial-Data')));
 
