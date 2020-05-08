@@ -2,6 +2,7 @@
 
 namespace BoxyBird\Inertia;
 
+use Closure;
 use Illuminate\Support\Arr;
 
 class Inertia
@@ -85,6 +86,12 @@ class Inertia
         $props = ($only && data_get(self::$request, 'X-Inertia-Partial-Component') === self::$component)
             ? Arr::only($props, $only)
             : $props;
+
+        array_walk_recursive($props, function (&$prop) {
+            if ($prop instanceof Closure) {
+                $prop = $prop();
+            }
+        });
 
         self::$props = $props;
     }
