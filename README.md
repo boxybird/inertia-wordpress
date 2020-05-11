@@ -11,50 +11,50 @@ Clone or Download plugin and run `composer install` before activating in WordPre
 - Links: https://inertiajs.com/links
 - Pages: https://inertiajs.com/pages
 - Requests: https://inertiajs.com/requests
+- Shared Data: https://inertiajs.com/shared-data
+- Asset Versioning: https://inertiajs.com/asset-versioning
 
 ## Root Template Example
 
+> Location: /wp-content/themes/your-theme/app.php
+
 ```php
-// /wp-content/your-theme/app.php
-
 <!DOCTYPE html>
-<html <?php language_attributes(); ?>>
-  <head>
-    <meta charset="<?php bloginfo('charset'); ?>" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <?php wp_head(); ?>
-  </head>
-  <body <?php body_class(); ?>>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <?php wp_head(); ?>
+    </head>
+    <body>
 
-    <?php bb_inject_inertia(); ?>
+        <?php bb_inject_inertia(); ?> // Adds Inertia to the page
 
-    <?php wp_footer(); ?>
-  </body>
+        <?php wp_footer(); ?>
+    </body>
 </html>
 ```
 
-### Template File Override
+### Root Template File Override
+
+> Location: /wp-content/themes/your-theme/functions.php
+
+By default the WordPress adapter will use the `app.php` from `.../your-theme/app.php`. If you would like to use a different file name, you can change it. E.g. `.../your-theme/layout.php`.
 
 ```php
-<?php // /wp-content/your-theme/functions.php
+<?php
 
-// Set custom Inertia root template.
-// Default '/wp-content/your-theme/app.php'
-// Becomes '/wp-content/your-theme/layout.php'
 add_action('init', function () {
     Inertia::setRootView('layout.php');
 });
 ```
 
-### Inertia Function Output
+### Inertia Function Output Override
+
+By default the `bb_inject_inertia()` function returns `<div id="app" data-page="{...inertiaJsonData}"></div>`. If you need to override the `div` id, you can.
 
 ```php
-// Don't use directly. Just illustrating the HTML.
-// Default 'bb_inject_inertia()' function output.
-echo '<div id="app" data-page="{...inertiaJsonData}"></div>';
-
 // Override 'id="app"' to 'id="my_app"'
-// Useful if 'app' id is already being used elsewhere in the HTML
 <?php bb_inject_inertia('my_app'); ?>
 ```
 
@@ -62,8 +62,10 @@ echo '<div id="app" data-page="{...inertiaJsonData}"></div>';
 
 ### Basic
 
+> Location: /wp-content/themes/your-theme/index.php
+
 ```php
-<?php // /wp-content/your-theme/index.php
+<?php
 
 use BoxyBird\Inertia\Inertia;
 
@@ -74,15 +76,12 @@ return Inertia::render('Index', [
 
 ### Less Basic
 
-```php
-<?php // /wp-content/your-theme/index.php
+> Location: /wp-content/themes/your-theme/index.php
 
-/**
- * This may look busy, however it can
- * be thought of as a "Controller". It gives
- * you a place to handle all your business logic.
- * leaving your Javacript files easier to reason about.
- */
+This may look busy, however it can be thought of as a "Controller". It gives you a place to handle all your business logic. Leaving your Javacript files easier to reason about.
+
+```php
+<?php
 
 use BoxyBird\Inertia\Inertia;
 
@@ -133,14 +132,16 @@ But don't fret. WordPress typically offers a solution to this caveat: `get_the_t
 
 Reference: https://developer.wordpress.org/reference/functions/
 
-## Sharing data
+## Shared data
+
+> Location: /wp-content/themes/your-theme/functions.php
 
 ```php
 add_action('init', function () {
-    // Synchronously using key/value 
+    // Synchronously using key/value
     Inertia::share('site_name', get_bloginfo('name'));
 
-    // Synchronously using array 
+    // Synchronously using array
     Inertia::share([
         'primary_menu' => array_map(function ($menu_item) {
             return [
@@ -179,21 +180,22 @@ add_action('init', function () {
 });
 ```
 
-Reference: https://inertiajs.com/shared-data
-
 ## Asset Versioning
 
-```php
-// Optional, but helps with cache busting.
-// Here we're using the Laravel Mix manifest as an example,
-// but you use any value you'd like based on your build system.
-add_action('init', function () {
-    $manifest = get_stylesheet_directory() . '/mix-manifest.json';
+> Location: /wp-content/themes/your-theme/functions.php
 
-    Inertia::version(md5_file($manifest));
+Optional, but helps with cache busting.
+
+```php
+add_action('init', function () {
+    // If you're using Laravel Mix, you can
+    // use the mix-manifest.json for this.
+    $version = md5_file(get_stylesheet_directory() . '/mix-manifest.json');
+
+    Inertia::version($version);
 });
 ```
 
 ## Example WordPress Projects
 
-* https://github.com/boxybird/wordpress-inertia-demo-theme
+- https://github.com/boxybird/wordpress-inertia-demo-theme
