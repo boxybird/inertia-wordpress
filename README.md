@@ -199,3 +199,4 @@ add_action('init', function () {
 ## Example WordPress Projects
 
 - https://github.com/boxybird/wordpress-inertia-demo-theme
+- https://github.com/boxybird/wordpress-inertia-starter-theme
