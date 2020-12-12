@@ -6,6 +6,10 @@ The unofficial [Inertia.js](https://inertiajs.com) server-side adapter WordPress
 
 Clone or Download plugin and run `composer install` before activating in WordPress Admin.
 
+## Example Movie CPT WordPress Project
+- Demo: https://wp-inertia.andrewrhyand.com
+- Theme: https://github.com/boxybird/wordpress-inertia-demo-theme
+
 ## Inertia Docs
 
 - Links: https://inertiajs.com/links
@@ -195,8 +199,3 @@ add_action('init', function () {
     Inertia::version($version);
 });
 ```
-
-## Example WordPress Projects
-
-- https://github.com/boxybird/wordpress-inertia-demo-theme
-- https://github.com/boxybird/wordpress-inertia-starter-theme
