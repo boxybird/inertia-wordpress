@@ -39,6 +39,8 @@ class Inertia
         ];
 
         if (InertiaHeaders::inRequest()) {
+            InertiaHeaders::addToResponse();
+
             wp_send_json($bb_inertia_page);
         }
 
@@ -69,7 +71,7 @@ class Inertia
         global $wp;
 
         self::$request = array_merge([
-            'WP-Inertia' => (array) $wp
+            'WP-Inertia' => (array) $wp,
         ], getallheaders());
     }
 
