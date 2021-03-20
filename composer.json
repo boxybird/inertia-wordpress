@@ -19,6 +19,9 @@
   "autoload": {
     "psr-4": {
       "BoxyBird\\Inertia\\": "src/"
-    }
+    },
+    "files": [
+      "src/functions.php"
+    ]
   }
 }

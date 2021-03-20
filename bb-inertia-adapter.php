@@ -4,7 +4,7 @@
  * Plugin Name:       BoxyBird Inertia Adapter
  * Plugin URI:        #
  * Description:       A WordPress adapter for Inertia.js.
- * Version:           0.4.0
+ * Version:           0.4.1
  * Author:            Andrew Rhyand
  * Author URI:        andrewrhyand.com
  * License:           GPLv2 or later
@@ -20,7 +20,7 @@ if (!defined('WPINC')) {
 /**
  * Current plugin version.
  */
-define('BOXYBIRD_INERTIA_ADAPTER', '0.4.0');
+define('BOXYBIRD_INERTIA_ADAPTER', '0.4.1');
 
 /**
  * Composer autoload
@@ -30,13 +30,3 @@ if (!file_exists($autoload = __DIR__ . '/vendor/autoload.php')) {
 }
 
 require_once $autoload;
-
-/**
- * Helper functions
- */
-require_once __DIR__ . '/src/functions.php';
-
-/**
- * WordPress hooks
- */
-BoxyBird\Inertia\Hooks::init();
