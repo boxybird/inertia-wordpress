@@ -32,11 +32,6 @@ if (!file_exists($autoload = __DIR__ . '/vendor/autoload.php')) {
 require_once $autoload;
 
 /**
- * Helper functions
- */
-require_once __DIR__ . '/src/functions.php';
-
-/**
  * WordPress hooks
  */
 BoxyBird\Inertia\Hooks::init();
