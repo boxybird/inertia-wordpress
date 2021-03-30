@@ -7,10 +7,10 @@ The unofficial [Inertia.js](https://inertiajs.com) server-side adapter WordPress
 Option 1: Install the package via composer. (**Recommended**)
 
 ```
-composer require boxybird/wordpress-inertia-plugin
+composer require boxybird/inertia-wordpress
 ```
 
-Option 2: Clone or download plugin and run `composer install` before activating in WordPress Admin.
+Option 2: Clone or download as a plugin and run `composer install` before activating in WordPress Admin.
 
 ## Example Movie CPT WordPress Project
 - Demo: https://wp-inertia.andrewrhyand.com
