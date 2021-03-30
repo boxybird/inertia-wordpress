@@ -1,6 +1,6 @@
 {
-  "name": "boxybird/wordpress-inertia-plugin",
-  "description": "Inertia.js WordPress Adapter",
+  "name": "boxybird/inertia-wordpress",
+  "description": "The WordPress adapter for Inertia.js",
   "license": "MIT",
   "keywords": [
     "wordpress",
