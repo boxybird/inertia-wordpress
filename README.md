@@ -1,6 +1,6 @@
 # Inertia.js WordPress Adapter
 
-The unofficial [Inertia.js](https://inertiajs.com) server-side adapter WordPress plugin.
+The unofficial [Inertia.js](https://inertiajs.com) server-side adapter for WordPress.
 
 ## Installation
 
