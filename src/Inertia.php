@@ -77,16 +77,26 @@ class Inertia
 
     protected static function setUrl()
     {
-        self::$url = data_get($_SERVER, 'REQUEST_URI');
+        self::$url = isset($_SERVER['REQUEST_URI'])
+            ? $_SERVER['REQUEST_URI']
+            : '/';
     }
 
     protected static function setProps(array $props)
     {
         $props = array_merge($props, self::$shared_props);
 
-        $only = array_filter(explode(',', data_get(self::$request, 'X-Inertia-Partial-Data')));
+        $partial_data = isset(self::$request['X-Inertia-Partial-Data'])
+            ? self::$request['X-Inertia-Partial-Data']
+            : null;
 
-        $props = ($only && data_get(self::$request, 'X-Inertia-Partial-Component') === self::$component)
+        $only = array_filter(explode(',', $partial_data));
+
+        $partial_component = isset(self::$request['X-Inertia-Partial-Component'])
+            ? self::$request['X-Inertia-Partial-Component']
+            : null;
+
+        $props = ($only && $partial_component === self::$component)
             ? Arr::only($props, $only)
             : $props;
 
