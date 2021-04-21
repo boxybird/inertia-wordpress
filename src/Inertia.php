@@ -3,7 +3,6 @@
 namespace BoxyBird\Inertia;
 
 use Closure;
-use Illuminate\Support\Arr;
 
 class Inertia
 {
@@ -62,7 +61,7 @@ class Inertia
         if (is_array($key)) {
             self::$shared_props = array_merge(self::$shared_props, $key);
         } else {
-            Arr::set(self::$shared_props, $key, $value);
+            InertiaHelper::arraySet(self::$shared_props, $key, $value);
         }
     }
 
@@ -97,7 +96,7 @@ class Inertia
             : null;
 
         $props = ($only && $partial_component === self::$component)
-            ? Arr::only($props, $only)
+            ? InertiaHelper::arrayOnly($props, $only)
             : $props;
 
         array_walk_recursive($props, function (&$prop) {
