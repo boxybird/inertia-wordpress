@@ -77,7 +77,7 @@ class Inertia
 
     protected static function setUrl()
     {
-        self::$url = '/' . data_get(self::$request, 'WP-Inertia.request');
+        self::$url = data_get($_SERVER, 'REQUEST_URI');
     }
 
     protected static function setProps(array $props)
