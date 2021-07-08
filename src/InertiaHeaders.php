@@ -4,9 +4,14 @@ namespace BoxyBird\Inertia;
 
 class InertiaHeaders
 {
+    public static function all()
+    {
+        return array_change_key_case(getallheaders(), CASE_LOWER);
+    }
+
     public static function inRequest()
     {
-        $headers = array_change_key_case(getallheaders(), CASE_LOWER);
+        $headers = self::all();
 
         if (isset($headers['x-requested-with'])
             && $headers['x-requested-with'] === 'XMLHttpRequest'
