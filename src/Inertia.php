@@ -71,7 +71,7 @@ class Inertia
 
         self::$request = array_merge([
             'WP-Inertia' => (array) $wp,
-        ], getallheaders());
+        ], InertiaHeaders::all());
     }
 
     protected static function setUrl()
@@ -85,14 +85,14 @@ class Inertia
     {
         $props = array_merge($props, self::$shared_props);
 
-        $partial_data = isset(self::$request['X-Inertia-Partial-Data'])
-            ? self::$request['X-Inertia-Partial-Data']
+        $partial_data = isset(self::$request['x-inertia-partial-data'])
+            ? self::$request['x-inertia-partial-data']
             : null;
 
         $only = array_filter(explode(',', $partial_data));
 
-        $partial_component = isset(self::$request['X-Inertia-Partial-Component'])
-            ? self::$request['X-Inertia-Partial-Component']
+        $partial_component = isset(self::$request['x-inertia-partial-component'])
+            ? self::$request['x-inertia-partial-component']
             : null;
 
         $props = ($only && $partial_component === self::$component)
