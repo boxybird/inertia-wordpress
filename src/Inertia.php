@@ -65,6 +65,11 @@ class Inertia
         }
     }
 
+    public static function lazy(callable $callback)
+    {
+        return new LazyProp($callback);
+    }
+
     protected static function setRequest()
     {
         global $wp;
@@ -97,9 +102,16 @@ class Inertia
 
         $props = ($only && $partial_component === self::$component)
             ? InertiaHelper::arrayOnly($props, $only)
-            : $props;
+            : array_filter($props, function ($prop) {
+                // remove lazy props when not calling for partials
+                return ! ($prop instanceof LazyProp);
+            });
 
         array_walk_recursive($props, function (&$prop) {
+            if ($prop instanceof LazyProp) {
+                $prop = $prop();
+            }
+
             if ($prop instanceof Closure) {
                 $prop = $prop();
             }
