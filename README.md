@@ -23,6 +23,7 @@ Option 2: Clone or download as a plugin and run `composer install` before activa
 - Requests: https://inertiajs.com/requests
 - Shared Data: https://inertiajs.com/shared-data
 - Asset Versioning: https://inertiajs.com/asset-versioning
+- Partial Reloads: https://inertiajs.com/partial-reloads
 
 ## Root Template Example
 
@@ -170,6 +171,15 @@ add_action('init', function () {
             ];
         }
     });
+
+    // Lazily on partial reloads
+    Inertia::share('auth', Inertia::lazy(function () {
+        if (is_user_logged_in()) {
+            return [
+                'user' => wp_get_current_user()
+            ];
+        }
+    }));
 
     // Multiple values
     Inertia::share([
