@@ -65,8 +65,8 @@ add_action('init', function () {
 By default the `bb_inject_inertia()` function returns `<div id="app" data-page="{...inertiaJsonData}"></div>`. If you need to override the `div` id, you can.
 
 ```php
-// Override 'id="app"' to 'id="my_app"'
-<?php bb_inject_inertia('my_app'); ?>
+// Override 'id="app"' to 'id="my_app"' and add classes
+<?php bb_inject_inertia('my_app', 'bg-blue-100 font-mono p-4'); ?>
 ```
 
 ## Inertia Response Examples

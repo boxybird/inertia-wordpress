@@ -1,13 +1,17 @@
 <?php
 
 if (!function_exists('bb_inject_inertia')) {
-    function bb_inject_inertia(string $id = 'app')
+    function bb_inject_inertia(string $id = 'app', string $classes = '')
     {
         global $bb_inertia_page;
 
         if (!isset($bb_inertia_page)) {
             return;
         }
+
+        $classes = !empty($classes)
+            ? 'class="' . $classes . '"'
+            : '';
 
         $page = htmlspecialchars(
             json_encode($bb_inertia_page),
@@ -16,7 +20,7 @@ if (!function_exists('bb_inject_inertia')) {
             true
         );
 
-        echo "<div id=\"{$id}\" data-page=\"{$page}\"></div>";
+        echo "<div id=\"{$id}\" {$classes} data-page=\"{$page}\"></div>";
     }
 }
 
