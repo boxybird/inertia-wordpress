@@ -12,6 +12,9 @@ composer require boxybird/inertia-wordpress
 
 Option 2: Clone or download as a plugin and run `composer install` before activating in WordPress Admin.
 
+## Bare-bones Example Theme
+- https://github.com/boxybird/wordpress-inertia-starter-theme
+
 ## Example Movie CPT WordPress Project
 - Demo: https://wp-inertia.andrewrhyand.com
 - Theme: https://github.com/boxybird/wordpress-inertia-demo-theme
