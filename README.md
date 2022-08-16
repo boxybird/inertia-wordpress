@@ -83,7 +83,9 @@ By default the `bb_inject_inertia()` function returns `<div id="app" data-page="
 
 use BoxyBird\Inertia\Inertia;
 
-return Inertia::render('Index', [
+global $wp_query;
+
+Inertia::render('Index', [
     'posts' => $wp_query->posts,
 ]);
 ```
@@ -99,6 +101,8 @@ This may look busy, however it can be thought of as a "Controller". It gives you
 
 use BoxyBird\Inertia\Inertia;
 
+global $wp_query;
+
 // Build $posts array
 $posts = array_map(function ($post) {
     return [
@@ -106,7 +110,7 @@ $posts = array_map(function ($post) {
         'title'   => get_the_title($post->ID),
         'link'    => get_the_permalink($post->ID),
         'image'   => get_the_post_thumbnail_url($post->ID),
-        'content' => apply_filters('the_content', get_the_content(null, false, $post->ID));
+        'content' => apply_filters('the_content', get_the_content(null, false, $post->ID)),
     ];
 }, $wp_query->posts);
 
@@ -124,7 +128,7 @@ $pagination = [
 ];
 
 // Return Inertia view with data
-return Inertia::render('Posts/Index', [
+Inertia::render('Posts/Index', [
     'posts'      => $posts,
     'pagination' => $pagination,
 ]);
