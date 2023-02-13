@@ -35,8 +35,10 @@ if (!function_exists('bb_inject_inertia')) {
                 
                 curl_close($curl);
 
-                echo $content->body;
-                return;
+                if($content) {
+                    echo $content->body;
+                    return;
+                }
             } catch (Exception $e) {
                 throw new Exception("Couldn't contact the SSR server", $e->getMessage());
             }
