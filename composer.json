@@ -1,5 +1,5 @@
 {
-  "name": "boxybird/inertia-wordpress",
+  "name": "web-id-fr/inertia-wordpress",
   "description": "The WordPress adapter for Inertia.js",
   "type": "wordpress-plugin",
   "license": "MIT",
@@ -12,13 +12,17 @@
     {
       "name": "Andrew Rhyand",
       "email": "hello@andrewrhyand.com"
+    },
+    {
+      "name": "Web^ID",
+      "email": "hello@web-id.fr"
     }
   ],
   "require": {
   },
   "autoload": {
     "psr-4": {
-      "BoxyBird\\Inertia\\": "src/"
+      "WebID\\Inertia\\": "src/"
     },
     "files": [
       "src/functions.php"

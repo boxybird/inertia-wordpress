@@ -1,15 +1,15 @@
 <?php
 
-namespace BoxyBird\Inertia;
+namespace WebID\Inertia;
 
 class InertiaHeaders
 {
-    public static function all()
+    public static function all(): false|array
     {
         return array_change_key_case(getallheaders(), CASE_LOWER);
     }
 
-    public static function inRequest()
+    public static function inRequest(): bool
     {
         $headers = self::all();
 
@@ -24,7 +24,7 @@ class InertiaHeaders
         return false;
     }
 
-    public static function addToResponse()
+    public static function addToResponse(): void
     {
         header('Vary: Accept');
         header('X-Inertia: true');

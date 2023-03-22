@@ -1,28 +1,28 @@
 <?php
 
-namespace BoxyBird\Inertia;
+namespace WebID\Inertia;
 
 use Closure;
 
 class Inertia
 {
-    protected static $url;
+    protected static string $url;
 
-    protected static $props;
+    protected static array $props;
 
-    protected static $request;
+    protected static array $request;
 
-    protected static $version;
+    protected static string $version = 'main';
 
-    protected static $component;
+    protected static string $component;
 
-    protected static $shared_props = [];
+    protected static array $shared_props = [];
 
-    protected static $root_view = 'app.php';
+    protected static string $root_view = 'app.php';
 
-    public static function render(string $component, array $props = [])
+    public static function render(string $component, array $props = []): void
     {
-        global $bb_inertia_page;
+        global $web_id_inertia_page;
 
         self::setRequest();
 
@@ -30,33 +30,33 @@ class Inertia
         self::setComponent($component);
         self::setProps($props);
 
-        $bb_inertia_page = [
-            'url'       => self::$url,
-            'props'     => self::$props,
-            'version'   => self::$version,
+        $web_id_inertia_page = [
+            'url' => self::$url,
+            'props' => self::$props,
+            'version' => self::$version,
             'component' => self::$component,
         ];
 
         if (InertiaHeaders::inRequest()) {
             InertiaHeaders::addToResponse();
 
-            wp_send_json($bb_inertia_page);
+            wp_send_json($web_id_inertia_page);
         }
 
         require_once get_stylesheet_directory() . '/' . self::$root_view;
     }
 
-    public static function setRootView(string $name)
+    public static function setRootView(string $name): void
     {
         self::$root_view = $name;
     }
 
-    public static function version(string $version = '')
+    public static function version(string $version = ''): void
     {
         self::$version = $version;
     }
 
-    public static function share($key, $value = null)
+    public static function share($key, $value = null): void
     {
         if (is_array($key)) {
             self::$shared_props = array_merge(self::$shared_props, $key);
@@ -65,12 +65,12 @@ class Inertia
         }
     }
 
-    public static function lazy(callable $callback)
+    public static function lazy(callable $callback): LazyProp
     {
         return new LazyProp($callback);
     }
 
-    protected static function setRequest()
+    protected static function setRequest(): void
     {
         global $wp;
 
@@ -79,32 +79,26 @@ class Inertia
         ], InertiaHeaders::all());
     }
 
-    protected static function setUrl()
+    protected static function setUrl(): void
     {
-        self::$url = isset($_SERVER['REQUEST_URI'])
-            ? $_SERVER['REQUEST_URI']
-            : '/';
+        self::$url = $_SERVER['REQUEST_URI'] ?? '/';
     }
 
-    protected static function setProps(array $props)
+    protected static function setProps(array $props): void
     {
         $props = array_merge($props, self::$shared_props);
 
-        $partial_data = isset(self::$request['x-inertia-partial-data'])
-            ? self::$request['x-inertia-partial-data']
-            : null;
+        $partial_data = self::$request['x-inertia-partial-data'] ?? null;
 
         $only = array_filter(explode(',', $partial_data));
 
-        $partial_component = isset(self::$request['x-inertia-partial-component'])
-            ? self::$request['x-inertia-partial-component']
-            : null;
+        $partial_component = self::$request['x-inertia-partial-component'] ?? null;
 
         $props = ($only && $partial_component === self::$component)
             ? InertiaHelper::arrayOnly($props, $only)
             : array_filter($props, function ($prop) {
                 // remove lazy props when not calling for partials
-                return ! ($prop instanceof LazyProp);
+                return !($prop instanceof LazyProp);
             });
 
         array_walk_recursive($props, function (&$prop) {
@@ -120,7 +114,7 @@ class Inertia
         self::$props = $props;
     }
 
-    protected static function setComponent(string $component)
+    protected static function setComponent(string $component): void
     {
         self::$component = $component;
     }

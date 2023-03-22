@@ -2,22 +2,17 @@
 
 The unofficial [Inertia.js](https://inertiajs.com) server-side adapter for WordPress.
 
+This is a form BoxyBird (Andrew Rhyand) Work https://github.com/boxybird/inertia-wordpress
+
+It adds [SSR](#ssr) support and requires PHP 8.2. See [Changelog](#changelog) section for more information
+
 ## Installation
 
-Option 1: Install the package via composer. (**Recommended**)
+Install the package via composer.
 
 ```
-composer require boxybird/inertia-wordpress
+composer require web-id-fr/inertia-wordpress
 ```
-
-Option 2: Clone or download as a plugin and run `composer install` before activating in WordPress Admin.
-
-## Bare-bones Example Theme
-- https://github.com/boxybird/wordpress-inertia-starter-theme
-
-## Example Movie CPT WordPress Project
-- Demo: https://wp-inertia.andrewrhyand.com
-- Theme: https://github.com/boxybird/wordpress-inertia-demo-theme
 
 ## Inertia Docs
 
@@ -34,18 +29,18 @@ Option 2: Clone or download as a plugin and run `composer install` before activa
 
 ```php
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <?php wp_head(); ?>
-    </head>
-    <body>
-
-        <?php bb_inject_inertia(); ?> // Adds Inertia to the page
-
-        <?php wp_footer(); ?>
-    </body>
+<html lang="fr">
+<?php $inertia = web_id_get_inertia(); ?>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php wp_head(); ?>
+    <?php echo $inertia['head']; ?>
+</head>
+<body>
+<?php echo $inertia['body']; ?>
+<?php wp_footer(); ?>
+</body>
 </html>
 ```
 
@@ -53,7 +48,8 @@ Option 2: Clone or download as a plugin and run `composer install` before activa
 
 > Location: /wp-content/themes/your-theme/functions.php
 
-By default the WordPress adapter will use the `app.php` from `.../your-theme/app.php`. If you would like to use a different file name, you can change it. E.g. `.../your-theme/layout.php`.
+By default the WordPress adapter will use the `app.php` from `.../your-theme/app.php`. If you would like to use a
+different file name, you can change it. E.g. `.../your-theme/layout.php`.
 
 ```php
 <?php
@@ -65,12 +61,25 @@ add_action('init', function () {
 
 ### Inertia Function Output Override
 
-By default the `bb_inject_inertia()` function returns `<div id="app" data-page="{...inertiaJsonData}"></div>`. If you need to override the `div` id, you can.
+By default the `web_id_get_inertia()['body']` function returns `<div id="app" data-page="{...inertiaJsonData}"></div>`.
+If
+you
+need to override the `div` id, you can.
 
 ```php
 // Override 'id="app"' to 'id="my_app"' and add classes
-<?php bb_inject_inertia('my_app', 'bg-blue-100 font-mono p-4'); ?>
+<?php $inertia = web_id_get_inertia('my_app', 'bg-blue-100 font-mono p-4'); ?>
 ```
+
+### SSR
+
+To handle SSR on your Inertia APP
+
+- Generate a ssr file `vite build --outDir web/app/js/dist/ssr --ssr src/ssr.jsx`
+- Run the node deamon  `run:ssr": "node web/app/js/dist/ssr/ssr.js`
+- If necessary, override the constant `INERTIA_SSR_URL` with the URL of the node file which
+  is `'http://127.0.0.1:13714/render'` by default.
+- use the `web_id_get_inertia()` as explained earlier
 
 ## Inertia Response Examples
 
@@ -81,7 +90,7 @@ By default the `bb_inject_inertia()` function returns `<div id="app" data-page="
 ```php
 <?php
 
-use BoxyBird\Inertia\Inertia;
+use WebID\Inertia\Inertia;
 
 global $wp_query;
 
@@ -94,12 +103,13 @@ Inertia::render('Index', [
 
 > Location: /wp-content/themes/your-theme/index.php
 
-This may look busy, however it can be thought of as a "Controller". It gives you a place to handle all your business logic. Leaving your Javacript files easier to reason about.
+This may look busy, however it can be thought of as a "Controller". It gives you a place to handle all your business
+logic. Leaving your JavaScript files easier to reason about.
 
 ```php
 <?php
 
-use BoxyBird\Inertia\Inertia;
+use WebID\Inertia\Inertia;
 
 global $wp_query;
 
@@ -136,17 +146,20 @@ Inertia::render('Posts/Index', [
 
 ### Quick Note
 
-You may be wondering what this moster line above does:
+You may be wondering what this master line above does:
 
 ```php
 'content' => apply_filters('the_content', get_the_content(null, false, $post->ID));
 ```
 
-Because we can't use the WordPress function `the_content()` outside of a traditional theme template setup, we need to use `get_the_content()` instead. However, we first need to apply the filters other plugins and WordPress have registered.
+Because we can't use the WordPress function `the_content()` outside of a traditional theme template setup, we need to
+use `get_the_content()` instead. However, we first need to apply the filters other plugins and WordPress have
+registered.
 
 Matter of fact, we can't use any WordPress function that uses `echo`, and not `return`.
 
-But don't fret. WordPress typically offers a solution to this caveat: `get_the_title()` vs `the_title()`, `get_the_ID()` vs `the_ID()`, and so on...
+But don't fret. WordPress typically offers a solution to this caveat: `get_the_title()` vs `the_title()`, `get_the_ID()`
+vs `the_ID()`, and so on...
 
 Reference: https://developer.wordpress.org/reference/functions/
 
@@ -222,3 +235,18 @@ add_action('init', function () {
     Inertia::version($version);
 });
 ```
+
+## Changelog
+
+### [1.0.0] - 2023-03-23
+
+Init fork from https://github.com/boxybird/inertia-wordpress
+
+#### Added
+
+- SSR Support
+
+#### Changed
+
+- Requires PHP 8.2
+- Publishes autoload files so it can go in plugins directory without running commands

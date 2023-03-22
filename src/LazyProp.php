@@ -1,6 +1,6 @@
 <?php
 
-namespace BoxyBird\Inertia;
+namespace WebID\Inertia;
 
 class LazyProp
 {
