@@ -2,7 +2,7 @@
 
 The unofficial [Inertia.js](https://inertiajs.com) server-side adapter for WordPress.
 
-This is a form BoxyBird (Andrew Rhyand) Work https://github.com/boxybird/inertia-wordpress
+This is a fork form BoxyBird (Andrew Rhyand) Work https://github.com/boxybird/inertia-wordpress
 
 It adds [SSR](#ssr) support and requires PHP 8.2. See [Changelog](#changelog) section for more information
 
