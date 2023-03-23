@@ -12,13 +12,15 @@
  * Text Domain:       web-id-inertia
  */
 
-// If this file is called directly, abort.
 if (!defined('WPINC')) {
     die;
 }
+
+define('WEBID_INERTIA_WORDPRESS_DIR', plugin_dir_path(__FILE__));
 
 if (!defined('INERTIA_SSR_URL')) {
     define('INERTIA_SSR_URL', 'http://127.0.0.1:13714/render');
 }
 
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/autoload.php';
+require_once __DIR__ . '/src/functions.php';

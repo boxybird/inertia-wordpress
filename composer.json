@@ -19,13 +19,5 @@
     }
   ],
   "require": {
-  },
-  "autoload": {
-    "psr-4": {
-      "WebID\\Inertia\\": "src/"
-    },
-    "files": [
-      "src/functions.php"
-    ]
   }
 }
