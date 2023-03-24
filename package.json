@@ -1,0 +1,13 @@
+{
+    "name": "inertia-wordpress",
+    "version": "1.0.0",
+    "main": "index.js",
+    "repository": "git@github.com:web-id-fr/inertia-wordpress.git",
+    "author": "Web^ID <hello@web-id.fr>",
+    "license": "MIT",
+    "devDependencies": {
+        "@types/node": "^18.15.7",
+        "picocolors": "^1.0.0",
+        "vite": "^4.2.1"
+    }
+}

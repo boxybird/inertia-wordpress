@@ -1,9 +1,9 @@
 <?php
 
 if (!function_exists('web_id_inject_inertia')) {
-    function web_id_inject_inertia(string $id = 'app', string $classes = '')
+    function web_id_inject_inertia(array $options)
     {
-        $inertia_data = web_id_get_inertia($id, $classes);
+        $inertia_data = web_id_get_inertia($options);
         if (empty($inertia_data) || !is_array($inertia_data)) {
             return;
         }
@@ -13,17 +13,26 @@ if (!function_exists('web_id_inject_inertia')) {
 }
 
 if (!function_exists('web_id_get_inertia')) {
-    function web_id_get_inertia(string $id = 'app', string $classes = '')
+    function web_id_get_inertia(array $options)
     {
+        $defaults = [
+            'id' => 'app',
+            'className' => '',
+            'publicDirectory' => 'public',
+            'ssrInputFile' => 'bootstrap/ssr/ssr.js',
+        ];
+        $options = wp_parse_args($options, $defaults);
+        $rootDirectory = str_replace($options['publicDirectory'], '', WP_CONTENT_DIR);
+
         global $web_id_inertia_page;
 
         if (!isset($web_id_inertia_page)) {
             return null;
         }
 
-        $ssr_js_exists = file_exists(realpath(WP_CONTENT_DIR . '/js/dist/ssr/ssr.js'));
+        $ssr_js_exists = file_exists(realpath(sprintf('%s/%s', $rootDirectory, $options['ssrInputFile'])));
         $headers = get_headers(INERTIA_SSR_URL);
-        $ssr_server_is_running = (bool) strpos($headers[0], '200');
+        $ssr_server_is_running = (bool)strpos($headers[0], '200');
 
         if ($ssr_js_exists && $ssr_server_is_running) {
             $res = wp_remote_post(INERTIA_SSR_URL, [
@@ -45,7 +54,7 @@ if (!function_exists('web_id_get_inertia')) {
 
             $response = [
                 'head' => [],
-                'body' => sprintf('<div id="%s" class="%s" data-page="%s"></div>', $id, $classes, $page)
+                'body' => sprintf('<div id="%s" class="%s" data-page="%s"></div>', $options['id'], $options['classes'], $page)
             ];
         }
 
